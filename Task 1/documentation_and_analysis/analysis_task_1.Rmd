@@ -1,0 +1,83 @@
+---
+title: "Task 1 - Decathlon Data - Analysis"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(readr)
+```
+
+```{r}
+decathlon <- read_rds(here("clean_data/cleaned_decathalon.rds"))
+```
+
+Who had the longest long jump seen in the data?
+
+```{r}
+# decathlon %>% 
+#   select(name,long_jump_dist) %>% 
+#   arrange(desc(long_jump_dist)) %>% 
+#   head(1)
+
+# Both methods work and produce the same results
+
+decathlon %>% 
+  slice_max(long_jump_dist) %>% 
+  select(name, long_jump_dist)
+```
+
+What was the average 100m time in each competition?
+
+```{r}
+decathlon %>% 
+  select(time_100m, competition) %>% 
+  group_by(competition) %>%
+  mutate("mean_time_100m" = mean(time_100m),
+         "median_time_100m" = median(time_100m)) %>% 
+  slice(1)
+  
+
+```
+
+Who had the highest total points across both competitions?
+
+```{r}
+decathlon %>% 
+  group_by(name) %>% 
+  mutate(sum_points = sum(points)) %>% 
+  select(name, sum_points) %>% 
+  arrange(desc(sum_points)) %>% 
+  head(1)
+
+# to check
+# sum(7708+8067)
+```
+
+What was the shot-put scores for the top three competitors in each competition?
+
+```{r}
+# decathlon %>% 
+#   group_by(competition) %>% 
+#   select(name, shot_put_dist, rank, competition) %>% 
+#   arrange(desc(shot_put_dist)) %>% 
+#   slice(1:3)
+  
+decathlon %>% 
+  group_by(competition) %>% 
+  select(name, shot_put_dist, rank, competition) %>%
+  slice_max(shot_put_dist, n= 3)
+```
+
+What was the average points for competitors who ran the 400m in less than 50 seconds vs. those than ran 400m in more than 50 seconds?
+```{r}
+decathlon %>% 
+  mutate(over_50s = if_else(time_400m > 50, TRUE, FALSE)) %>% 
+  group_by(over_50s) %>% 
+  mutate(avg_points = median(points)) %>% 
+  select(avg_points, over_50s) %>% 
+  slice(1)
+```
+
+

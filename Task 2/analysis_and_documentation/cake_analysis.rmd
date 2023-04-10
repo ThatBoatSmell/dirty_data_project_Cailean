@@ -1,0 +1,55 @@
+---
+title: "Task 2 - Cake ingredients - Analysis"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(here)
+
+cake_data <- read_csv(here("clean_data/clean_cake.csv"))
+```
+
+
+Which cake has the most cocoa in it?
+
+```{r}
+cake_data %>% 
+  filter(ingredient == "Cocoa") %>% 
+  arrange(desc(values)) %>% 
+  head(1)
+```
+
+For sponge cake, how many cups of ingredients are used in total?
+
+```{r}
+cake_data %>%
+  filter(measure == "cup", cake == "Sponge") %>%
+  drop_na(values) %>%
+  summarise(total_cups = (sum(values)))
+ 
+```
+
+
+How many ingredients are measured in teaspoons?
+
+```{r}
+cake_data %>% 
+  group_by(measure) %>% 
+  filter(measure == "teaspoon") %>% 
+  summarise(unique(ingredient)) %>% 
+  count()
+```
+
+Which cake has the most unique ingredients?
+
+```{r}
+drop_na(cake_data) %>% 
+  group_by(cake) %>% 
+  arrange(cake) %>% 
+  summarise(unique_ingredients = unique(ingredient)) %>% 
+  count(unique_ingredients) # Continue from here - this isn't working yet
+```
+
+
+Which ingredients are used only once?

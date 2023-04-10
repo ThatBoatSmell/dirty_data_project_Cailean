@@ -1,0 +1,45 @@
+---
+title: "Task 2 - Cake ingredients - Cleaning"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(here)
+library(tidyr)
+
+
+raw_cake <- read_csv(here("raw_data/cake-ingredients-1961.csv"))
+raw_cake_codes <- read_csv(here("raw_data/cake_ingredient_code.csv"))
+```
+
+```{r}
+#spliting data - codes to seperate columns so we can use them to join raw_cake_codes
+raw_cake_testing <- raw_cake %>%
+  pivot_longer(
+    cols = matches("^[A-Z]{2}$"),
+    names_to = "code",
+    values_to = "values"
+  )
+
+#raw_cake_testing <- raw_cake_testing %>%
+#  pivot_wider(names_from = "Cake", values_from = "values")
+
+# joining tables to replace codes with ingredient names
+raw_cake_testing <- inner_join(raw_cake_codes, raw_cake_testing, by = "code")
+```
+
+```{r}
+raw_cake_testing %>% 
+  arrange(Cake)
+```
+
+```{r}
+clean_cake <- clean_names(raw_cake_testing)
+```
+
+```{r}
+readr::write_csv(clean_cake, here("clean_data/clean_cake.csv"))
+```
+

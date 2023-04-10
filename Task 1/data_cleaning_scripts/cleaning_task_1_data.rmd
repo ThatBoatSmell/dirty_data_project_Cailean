@@ -1,0 +1,47 @@
+---
+title: "Task 1 - Decathlon Data - Cleaning"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+library(tidyverse)
+library(here)
+library(janitor)
+
+raw_decathlon <- read_rds(here("raw_data/decathlon.rds"))
+```
+
+```{r}
+names(raw_decathlon)
+```
+```{r}
+raw_decathalon_renamed <- clean_names(raw_decathlon)
+
+# Janitor has introduced x's to the start of columns with numbers - removing these x's
+# Renaming columns to be a little more descriptive
+raw_decathalon_renamed <- raw_decathalon_renamed %>% 
+  rename("time_100m" = "x100m", "time_400m" = "x400m", "time_110m_hurdle" = "x110m_hurdle", "time_1500m" = "x1500m",
+         "long_jump_dist" = "long_jump", "shot_put_dist" = "shot_put", "high_jump_height" = "high_jump", 
+         "discus_dist" = "discus", "pole_vault_height" = "pole_vault", "javelin_dist" = "javeline")
+
+```
+
+```{r}
+# removing the row names and converting them all to lower case
+
+raw_decathalon_renamed <- rownames_to_column(raw_decathalon_renamed, "names")
+
+raw_decathalon_renamed <- raw_decathalon_renamed %>% 
+  mutate("name" = tolower(names), .after = "names") %>% 
+  select(!names)
+```
+
+```{r}
+clean_decathalon <- raw_decathalon_renamed
+write_rds(clean_decathalon, here("clean_data/cleaned_decathalon.rds"))
+```
+
+
+
+
