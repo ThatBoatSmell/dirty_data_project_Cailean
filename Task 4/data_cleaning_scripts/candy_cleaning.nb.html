@@ -11,7 +11,7 @@
 
 
 
-<title>Task 2 - Cake ingredients - Analysis</title>
+<title>Task 4 - Halloween Candy Data</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1746,7 +1746,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Task 2 - Cake ingredients - Analysis</h1>
+<h1 class="title toc-ignore">Task 4 - Halloween Candy Data</h1>
 
 </div>
 
@@ -1754,129 +1754,69 @@ display: none;
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGhlcmUpXG5saWJyYXJ5KGphbml0b3IpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)
+library(here)
+library(janitor)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBjb3JlIHRpZHl2ZXJzZSBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDIuMC4wIOKUgOKUgFxu4pyUIGRwbHlyICAgICAxLjEuMSAgICAg4pyUIHJlYWRyICAgICAyLjEuNFxu4pyUIGZvcmNhdHMgICAxLjAuMCAgICAg4pyUIHN0cmluZ3IgICAxLjUuMFxu4pyUIGdncGxvdDIgICAzLjQuMSAgICAg4pyUIHRpYmJsZSAgICAzLjIuMVxu4pyUIGx1YnJpZGF0ZSAxLjkuMiAgICAg4pyUIHRpZHlyICAgICAxLjMuMFxu4pyUIHB1cnJyICAgICAxLjAuMSAgICAg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG7ihLkgVXNlIHRoZSBcdTAwMWJdODs7aHR0cDovL2NvbmZsaWN0ZWQuci1saWIub3JnL1x1MDAwN2NvbmZsaWN0ZWQgcGFja2FnZVx1MDAxYl04OztcdTAwMDcgdG8gZm9yY2UgYWxsIGNvbmZsaWN0cyB0byBiZWNvbWUgZXJyb3JzXG4ifQ== -->
-<pre><code>── Attaching core tidyverse packages ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.1     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.1     ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZXJlKVxuYGBgIn0= -->
-<pre class="r"><code>library(here)</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Initial look at the data jesus christ</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmF3X2NhbmR5XzIwMTUgPC0gcmVhZHhsOjpyZWFkX3hsc3goaGVyZShcInJhd19kYXRhL2JvaW5nLWJvaW5nLWNhbmR5LTIwMTUueGxzeFwiKSlcbnJhd19jYW5keV8yMDE2IDwtIHJlYWR4bDo6cmVhZF94bHN4KGhlcmUoXCJyYXdfZGF0YS9ib2luZy1ib2luZy1jYW5keS0yMDE2Lnhsc3hcIikpXG5yYXdfY2FuZHlfMjAxNyA8LSByZWFkeGw6OnJlYWRfeGxzeChoZXJlKFwicmF3X2RhdGEvYm9pbmctYm9pbmctY2FuZHktMjAxNy54bHN4XCIpKVxuYGBgIn0= -->
+<pre class="r"><code>raw_candy_2015 &lt;- readxl::read_xlsx(here(&quot;raw_data/boing-boing-candy-2015.xlsx&quot;))
+raw_candy_2016 &lt;- readxl::read_xlsx(here(&quot;raw_data/boing-boing-candy-2016.xlsx&quot;))
+raw_candy_2017 &lt;- readxl::read_xlsx(here(&quot;raw_data/boing-boing-candy-2017.xlsx&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiaGVyZSgpIHN0YXJ0cyBhdCBDOi9Vc2Vycy9Db2RlQ2xhbi9EZXNrdG9wL0NvZGVDbGFuL2RpcnR5X2RhdGFfcHJvamVjdF9DYWlsZWFuL1Rhc2sgMlxuIn0= -->
-<pre><code>here() starts at C:/Users/CodeClan/Desktop/CodeClan/dirty_data_project_Cailean/Task 2</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FrZV9kYXRhIDwtIHJlYWRfY3N2KGhlcmUoXCJjbGVhbl9kYXRhL2NsZWFuX2Nha2UuY3N2XCIpKVxuYGBgIn0= -->
-<pre class="r"><code>cake_data &lt;- read_csv(here(&quot;clean_data/clean_cake.csv&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogNjEyIENvbHVtbnM6IDXilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiLFwiXG5jaHIgKDQpOiBjb2RlLCBpbmdyZWRpZW50LCBtZWFzdXJlLCBjYWtlXG5kYmwgKDEpOiB2YWx1ZXNcbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
-<pre><code>Rows: 612 Columns: 5── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-chr (4): code, ingredient, measure, cake
-dbl (1): values
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlxuIn0= -->
+<pre><code>New names:</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Which cake has the most cocoa in it?</p>
+<p>steps: remove unneccesary data (i.e anything not given a Joy,
+Despair, Meh score or specifically asked for in question) - for 2015,
+regex to get anything wrapped in “[]” - for 2016, ^ - for 2017, regex Q6
+| “<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>$”</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FrZV9kYXRhICU+JSBcbiAgZmlsdGVyKGluZ3JlZGllbnQgPT0gXCJDb2NvYVwiKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyh2YWx1ZXMpKSAlPiUgXG4gIGhlYWQoMSlcbmBgYCJ9 -->
-<pre class="r"><code>cake_data %&gt;% 
-  filter(ingredient == &quot;Cocoa&quot;) %&gt;% 
-  arrange(desc(values)) %&gt;% 
-  head(1)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6NSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDUiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbTFSVFUvRE1BeE5QN0pwbFRZUS9JRWR1TFlIdUhBRWlyZ2lvU0h0NnJWaGk1WWxWWm95anZ6eURhZExxaTNDVWxMNzJjN3pjejllbHcvWk1pT0VKQ1NORTVKUWRBbjlYTHpsandRUkRDS1Nrb245L21EUnJjM2l1VDVMeE9WemdOQlNWUW9DTURPd0VxeHRsSkpCNXVaZHN2bUwyb3Q1dWNGR0FZWWhPck1WVDNmRTJjVXNWTUtPdGU0WjZzQzBValh6WkZ5dU5hczVrOFloNHgyRHR0TnNLSWF0OTBmZklEcjczQVhIUkt0OTRYbW1WdWN2WGtlMGNKaEtRT3VIR2RUV1lLRDQwdGlQMFNGb0dhdkdjQ1d4S2Y1dm81RU9nS3RPMmtucXZOcDBjcHZmVzRJK2ZiS3A4Nk16bjU0bzQyT3dwUkdUYXk2OWRDcGd4WVFMWnFpNEYxdzBtZytMeXhCdEM2TU0rTG9NLzVGSGVtM2s4QWNjcmVWTlNBSUFBQT09In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["code"],"name":[1],"type":["chr"],"align":["left"]},{"label":["ingredient"],"name":[2],"type":["chr"],"align":["left"]},{"label":["measure"],"name":[3],"type":["chr"],"align":["left"]},{"label":["cake"],"name":[4],"type":["chr"],"align":["left"]},{"label":["values"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"CA","2":"Cocoa","3":"tablespoon","4":"One Bowl Chocolate","5":"10"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>For sponge cake, how many cups of ingredients are used in total?</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FrZV9kYXRhICU+JVxuICBmaWx0ZXIobWVhc3VyZSA9PSBcImN1cFwiLCBjYWtlID09IFwiU3BvbmdlXCIpICU+JVxuICBkcm9wX25hKHZhbHVlcykgJT4lXG4gIHN1bW1hcmlzZSh0b3RhbF9jdXBzID0gKHN1bSh2YWx1ZXMpKSlcbmBgYCJ9 -->
-<pre class="r"><code>cake_data %&gt;%
-  filter(measure == &quot;cup&quot;, cake == &quot;Sponge&quot;) %&gt;%
-  drop_na(values) %&gt;%
-  summarise(total_cups = (sum(values)))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDEiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbVZRelE2Q01Bd3VQOU5BRkUxOERyaHc4ZWpCK0FCR0UyNW1BaXB4YmdSRzlPaVRneDNaRXAxTnVyWmYrclg5dHQ5bWFaaUZBT0NCNzNyZ0VVeUJIQSs3ZUEySVlPR0FENEdLTDJ4YWpRQkFwT0ptQnRwK0dnbW5qN0xGWlBrRmhsSkl5azU1VjdkV2U5Q0laMklvYzNUM2pjK0Facy9OR1czLzVoWlUwdVRTSUIrcjNxSk1SUzByd1pIa3FzdUpSWFlhQzFoMFhGMVN4UG10NC9jNFZRdTBZdERYT2RxL2NyWFNIZlFvb2tkTlNuNnRlR2x1Wi9SY01sMUVxSGdVbk5STnhhVlJnbWliak45a2tGd3dnNHphb1A4QWUyUDJPN0FCQUFBPSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["total_cups"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"3.5"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>How many ingredients are measured in teaspoons?</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FrZV9kYXRhICU+JSBcbiAgZ3JvdXBfYnkobWVhc3VyZSkgJT4lIFxuICBmaWx0ZXIobWVhc3VyZSA9PSBcInRlYXNwb29uXCIpICU+JSBcbiAgc3VtbWFyaXNlKHVuaXF1ZShpbmdyZWRpZW50KSkgJT4lIFxuICBjb3VudCgpXG5gYGAifQ== -->
-<pre class="r"><code>cake_data %&gt;% 
-  group_by(measure) %&gt;% 
-  filter(measure == &quot;teaspoon&quot;) %&gt;% 
-  summarise(unique(ingredient)) %&gt;% 
-  count()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogUmV0dXJuaW5nIG1vcmUgKG9yIGxlc3MpIHRoYW4gMSByb3cgcGVyIGBzdW1tYXJpc2UoKWAgZ3JvdXAgd2FzIGRlcHJlY2F0ZWQgaW4gZHBseXIgMS4xLjAuXG5QbGVhc2UgdXNlIGByZWZyYW1lKClgIGluc3RlYWQuXG5XaGVuIHN3aXRjaGluZyBmcm9tIGBzdW1tYXJpc2UoKWAgdG8gYHJlZnJhbWUoKWAsIHJlbWVtYmVyIHRoYXQgYHJlZnJhbWUoKWAgYWx3YXlzIHJldHVybnMgYW4gdW5ncm91cGVkIGRhdGEgZnJhbWUgYW5kIGFkanVzdCBhY2NvcmRpbmdseS5gc3VtbWFyaXNlKClgIGhhcyBncm91cGVkIG91dHB1dCBieSAnbWVhc3VyZScuIFlvdSBjYW4gb3ZlcnJpZGUgdXNpbmcgdGhlIGAuZ3JvdXBzYCBhcmd1bWVudC5cbiJ9 -->
-<pre><code>Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in dplyr 1.1.0.
-Please use `reframe()` instead.
-When switching from `summarise()` to `reframe()`, remember that `reframe()` always returns an ungrouped data frame and adjust accordingly.`summarise()` has grouped output by &#39;measure&#39;. You can override using the `.groups` argument.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjEsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMSDDlyAyIl0sIkdyb3VwcyI6WyJtZWFzdXJlIFsxXSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJsMlFTdzdDSUJDR3B3L1VOdkdSZUk1Mm93c1BZRHlBMGFSYnJLaU5GUnFnMGFVbmJ4MHFKQTBzWVBpWXgvOXozQmVidEVnQklJSTRqQ0FpR0FJNW53N1pEcERnSllBWUVuTitNR21OZ1lHcjBjTk1NNm9hSVRqRzg0RWo4NHBKV1ZPbHZNTDBTalhOYjVLK21KZWVTUEhPT1hKbGU0WmYzSHBjZmwrWHRCcUUvZUgwaFlKYXlaeHdJNnp6Q3FlaTBaWGdXQm9hVDhTVEZrZ1BMRnR1Umwyejh0SHlaN1kxOHExWEdQa09Sbkg0SHhuM3RoV3hyU2FNM3l2dTFKR2FYbGh0THd2MFBUaktHMWx4N2Y0SnFjcTEwTlRscGFXb0hSbThRZmNEWElOWEI4b0JBQUE9In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["measure"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"teaspoon","2":"8"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Which cake has the most unique ingredients?</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjEsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMSDDlyAyIl0sIkdyb3VwcyI6WyJjYWtlIFsxXSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJsMVFTd3JDTUJDZGZxSzBvaFM4Z0Jkb0VkMjRGdkVBb3VCMnJGV0xiU0pOaWk0OXVUcXBDWlJrTVpsNW1YbnpYbmFiNHpJK3hnQVFRT2dIRURCS2dSMzIyM1FGaEZEaFFRaVJ2bC9VTktWRWcwbnZZYnpHRThvWnRyUGRyYTAxMEQwQ2pCd0dsbGNvcFRNZG4xRmhkbW13THB6MnFCSFBqQk11RGFmL3B2Q2w0L0xhcHFSVDl3ZkRITytGbGM0cGZKeXBvWGlvVW5DYTg3VXI1dWp5R2dkSVdxNzNuTlA4MXZKN3VwaHI4Y1lwOUZ4N3Zkei83d3kvaG9zWnJrSEJyeVczOGxpRnA2SXl4WVJjZDM2eVIxTnlaWCtKVUprcG9kRDJ4Ym1vTE5LWmc4OFBLTGNuUTgwQkFBQT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["cake"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Babas au Rhum","2":"11"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Which ingredients are used only once?</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjgsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiOCDDlyAyIl0sIkdyb3VwcyI6WyJpbmdyZWRpZW50IFs4XSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJuMVJUVStFTUJBdEgzVVhqTHFKZjRBL0FBYzk2TmxkVGJ4NE1KcHN2SFZMRnhxaDNaUVNQUHF6UFMxT3NXTWlCd010TTQ4M25YbXZ6NXZ0ZGJwTkNTRVJpY09JUkJSQ1FsOWZIdkpiQWdna0FZbEo0cjRmUUxxRXdJRXJXRXYvWTNISEZEeWRUeS9XUnJBMjAvdk1NZ092aDAvWHB1OXFVV2FQWEhqb2ZHTWtBTHczaGltTDljbDlWV1ZETFMzU1RwNTYyNHJLWnpGa1NGMitEVkxzR0s4aFBwc21jdVArdS81SW9yeGhYZWZsSUppV3pMSmliMWdyWnZURTZLRlFnSGUrWC9nSjJ6aU9YL056a2JTYTdQTG5TbFVaVVVxaExEcXFZRHZPYWhmNllLVldVQjA2cytsc3VzRE1nRld2WExjeTUzV3Yzdk9yRzlmSzZ5Vit6c0I3ZzNINDB6TWUvVmtVblJhcWtncDlwdzNiaVFidkNyUlBxb3FEa2I4S1VrQzd3bXJMa0pkeTNTQXlpU1BIYjhWWVhybGtBZ0FBIn0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["ingredient"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"Bananas","2":"1"},{"1":"Cream of tartar","2":"1"},{"1":"Crushed Ice","2":"1"},{"1":"Dried currants","2":"1"},{"1":"Egg white","2":"1"},{"1":"Nutmeg","2":"1"},{"1":"Nuts","2":"1"},{"1":"Zwiebach","2":"1"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[8]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBUaGlzIHNlY3Rpb24gc2hvd3MgbXkgYWR2ZW50dXJlIGluIHRyeWluZyB0byB3b3JrIG91dCB3aHkgd2hhdCBpIHRob3VnaHQgd291bGQgYmUgdGhlIHNhbWUgcmVnZXggcGF0dGVybiBwcm9kdWNlZCBkaWZmZXJlbnQgcmVzdWx0c1xuXG4jIG9ubHlfY2FuZHlfMjAxNSA8LSByYXdfY2FuZHlfMjAxNSAlPiUgXG4jICAgc2VsZWN0KG1hdGNoZXMoXCJeW1tbOnByaW50Ol1dK10kXCIpKVxuIyBcbiMgd2hhdHNfdGhlX2RpZmZlcmVuY2UgPC0gcmF3X2NhbmR5XzIwMTUgJT4lIFxuIyAgIHNlbGVjdChtYXRjaGVzKFwiXltbXVtbOnByaW50Ol1dK1tdXSRcIikpXG4jIFxuIyB3aGF0c190aGVfZGlmZmVyZW5jZTIgPC0gcmF3X2NhbmR5XzIwMTUgJT4lIFxuIyAgIHNlbGVjdChtYXRjaGVzKFwiXltbXXsyfVtbOnByaW50Ol1dK1tdXXsxfSRcIikpXG4jIFxuIyBsaXN0X2EgPC0gbmFtZXMob25seV9jYW5keV8yMDE1KSBcbiMgbGlzdF9iIDwtIG5hbWVzKHdoYXRzX3RoZV9kaWZmZXJlbmNlKVxuIyBcbiMgbGlzdF9hWyEobGlzdF9hICVpbiUgbGlzdF9iKV1cbmBgYCJ9 -->
+<pre class="r"><code># This section shows my adventure in trying to work out why what i thought would be the same regex pattern produced different results
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlRhc2sgMiAtIENha2UgaW5ncmVkaWVudHMgLSBBbmFseXNpcyINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCmBgYHtyfQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpsaWJyYXJ5KGhlcmUpDQoNCmNha2VfZGF0YSA8LSByZWFkX2NzdihoZXJlKCJjbGVhbl9kYXRhL2NsZWFuX2Nha2UuY3N2IikpDQpgYGANCg0KDQpXaGljaCBjYWtlIGhhcyB0aGUgbW9zdCBjb2NvYSBpbiBpdD8NCg0KYGBge3J9DQpjYWtlX2RhdGEgJT4lIA0KICBmaWx0ZXIoaW5ncmVkaWVudCA9PSAiQ29jb2EiKSAlPiUgDQogIGFycmFuZ2UoZGVzYyh2YWx1ZXMpKSAlPiUgDQogIGhlYWQoMSkNCmBgYA0KDQpGb3Igc3BvbmdlIGNha2UsIGhvdyBtYW55IGN1cHMgb2YgaW5ncmVkaWVudHMgYXJlIHVzZWQgaW4gdG90YWw/DQoNCmBgYHtyfQ0KY2FrZV9kYXRhICU+JQ0KICBmaWx0ZXIobWVhc3VyZSA9PSAiY3VwIiwgY2FrZSA9PSAiU3BvbmdlIikgJT4lDQogIGRyb3BfbmEodmFsdWVzKSAlPiUNCiAgc3VtbWFyaXNlKHRvdGFsX2N1cHMgPSAoc3VtKHZhbHVlcykpKQ0KIA0KYGBgDQoNCg0KSG93IG1hbnkgaW5ncmVkaWVudHMgYXJlIG1lYXN1cmVkIGluIHRlYXNwb29ucz8NCg0KYGBge3J9DQpjYWtlX2RhdGEgJT4lIA0KICBncm91cF9ieShtZWFzdXJlKSAlPiUgDQogIGZpbHRlcihtZWFzdXJlID09ICJ0ZWFzcG9vbiIpICU+JSANCiAgc3VtbWFyaXNlKHVuaXF1ZShpbmdyZWRpZW50KSkgJT4lIA0KICBjb3VudCgpDQpgYGANCg0KV2hpY2ggY2FrZSBoYXMgdGhlIG1vc3QgdW5pcXVlIGluZ3JlZGllbnRzPw0KDQpgYGB7cn0NCmRyb3BfbmEoY2FrZV9kYXRhKSAlPiUgDQogIGdyb3VwX2J5KGNha2UpICU+JSANCiAgYXJyYW5nZShjYWtlKSAlPiUgDQogIG11dGF0ZSh1bmlxdWVfaW5ncmVkaWVudHMgPSB1bmlxdWUoaW5ncmVkaWVudCkpICU+JSANCiAgY291bnQoKSAlPiUgDQogIGFycmFuZ2UoZGVzYyhuKSkgJT4lIA0KICBoZWFkKDEpDQpgYGANCg0KDQpXaGljaCBpbmdyZWRpZW50cyBhcmUgdXNlZCBvbmx5IG9uY2U/DQoNCmBgYHtyfQ0KZHJvcF9uYShjYWtlX2RhdGEpICU+JSANCiAgZ3JvdXBfYnkoaW5ncmVkaWVudCkgJT4lIA0KICBhcnJhbmdlKGluZ3JlZGllbnQpICU+JSANCiAgbXV0YXRlKHVuaXF1ZV9pbmdyZWRpZW50cyA9IHVuaXF1ZShpbmdyZWRpZW50KSkgJT4lIA0KICBjb3VudCgpICU+JSANCiAgZmlsdGVyKG4gPT0gMSkNCmBgYA0KDQo=</div>
+# only_candy_2015 &lt;- raw_candy_2015 %&gt;% 
+#   select(matches(&quot;^[[[:print:]]+]$&quot;))
+# 
+# whats_the_difference &lt;- raw_candy_2015 %&gt;% 
+#   select(matches(&quot;^[[][[:print:]]+[]]$&quot;))
+# 
+# whats_the_difference2 &lt;- raw_candy_2015 %&gt;% 
+#   select(matches(&quot;^[[]{2}[[:print:]]+[]]{1}$&quot;))
+# 
+# list_a &lt;- names(only_candy_2015) 
+# list_b &lt;- names(whats_the_difference)
+# 
+# list_a[!(list_a %in% list_b)]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<pre><code>^[\\[][[:print:]]+[\\]]$</code></pre>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxub25seV9jYW5keV8yMDE1IDwtIHJhd19jYW5keV8yMDE1ICU+JSBcbiAgIHNlbGVjdChtYXRjaGVzKFwiXltbXXsxfVtbOnByaW50Ol1dK1tdXXsxfSRcIikpXG5gYGAifQ== -->
+<pre class="r"><code>only_candy_2015 &lt;- raw_candy_2015 %&gt;% 
+   select(matches(&quot;^[[]{1}[[:print:]]+[]]{1}$&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>\[][[:alnum:]]+[\]<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlRhc2sgNCAtIEhhbGxvd2VlbiBDYW5keSBEYXRhIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KYGBge3J9DQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkoaGVyZSkNCmxpYnJhcnkoamFuaXRvcikNCmBgYA0KDQpJbml0aWFsIGxvb2sgYXQgdGhlIGRhdGENCmplc3VzIGNocmlzdA0KYGBge3J9DQpyYXdfY2FuZHlfMjAxNSA8LSByZWFkeGw6OnJlYWRfeGxzeChoZXJlKCJyYXdfZGF0YS9ib2luZy1ib2luZy1jYW5keS0yMDE1Lnhsc3giKSkNCnJhd19jYW5keV8yMDE2IDwtIHJlYWR4bDo6cmVhZF94bHN4KGhlcmUoInJhd19kYXRhL2JvaW5nLWJvaW5nLWNhbmR5LTIwMTYueGxzeCIpKQ0KcmF3X2NhbmR5XzIwMTcgPC0gcmVhZHhsOjpyZWFkX3hsc3goaGVyZSgicmF3X2RhdGEvYm9pbmctYm9pbmctY2FuZHktMjAxNy54bHN4IikpDQpgYGANCg0Kc3RlcHM6IA0KICByZW1vdmUgdW5uZWNjZXNhcnkgZGF0YSAoaS5lIGFueXRoaW5nIG5vdCBnaXZlbiBhIEpveSwgRGVzcGFpciwgTWVoIHNjb3JlIG9yIHNwZWNpZmljYWxseSBhc2tlZCBmb3IgaW4gcXVlc3Rpb24pDQogICAgIC0gZm9yIDIwMTUsIHJlZ2V4IHRvIGdldCBhbnl0aGluZyB3cmFwcGVkIGluICJbXSIgDQogICAgIC0gZm9yIDIwMTYsIF4NCiAgICAgLSBmb3IgMjAxNywgcmVnZXggUTYgfCANCiJeW1xcW11bWzphbG51bTpdXStbXFxdXSQiDQpgYGB7cn0NCiMgVGhpcyBzZWN0aW9uIHNob3dzIG15IGFkdmVudHVyZSBpbiB0cnlpbmcgdG8gd29yayBvdXQgd2h5IHdoYXQgaSB0aG91Z2h0IHdvdWxkIGJlIHRoZSBzYW1lIHJlZ2V4IHBhdHRlcm4gcHJvZHVjZWQgZGlmZmVyZW50IHJlc3VsdHMNCg0KIyBvbmx5X2NhbmR5XzIwMTUgPC0gcmF3X2NhbmR5XzIwMTUgJT4lIA0KIyAgIHNlbGVjdChtYXRjaGVzKCJeW1tbOnByaW50Ol1dK10kIikpDQojIA0KIyB3aGF0c190aGVfZGlmZmVyZW5jZSA8LSByYXdfY2FuZHlfMjAxNSAlPiUgDQojICAgc2VsZWN0KG1hdGNoZXMoIl5bW11bWzpwcmludDpdXStbXV0kIikpDQojIA0KIyB3aGF0c190aGVfZGlmZmVyZW5jZTIgPC0gcmF3X2NhbmR5XzIwMTUgJT4lIA0KIyAgIHNlbGVjdChtYXRjaGVzKCJeW1tdezJ9W1s6cHJpbnQ6XV0rW11dezF9JCIpKQ0KIyANCiMgbGlzdF9hIDwtIG5hbWVzKG9ubHlfY2FuZHlfMjAxNSkgDQojIGxpc3RfYiA8LSBuYW1lcyh3aGF0c190aGVfZGlmZmVyZW5jZSkNCiMgDQojIGxpc3RfYVshKGxpc3RfYSAlaW4lIGxpc3RfYildDQpgYGANCiAgICANCiAgICBeW1xcW11bWzpwcmludDpdXStbXFxdXSQNCiAgICANCmBgYHtyfQ0Kb25seV9jYW5keV8yMDE1IDwtIHJhd19jYW5keV8yMDE1ICU+JSANCiAgIHNlbGVjdChtYXRjaGVzKCJeW1tdezF9W1s6cHJpbnQ6XV0rW11dezF9JCIpKQ0KYGBgDQoNCg==</div>
 
 
 
@@ -1923,7 +1863,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("cake_analysis.rmd");
+  window.initializeSourceEmbed("candy_cleaning.rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

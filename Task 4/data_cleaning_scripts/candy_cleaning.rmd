@@ -1,0 +1,50 @@
+---
+title: "Task 4 - Halloween Candy Data"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+Initial look at the data
+jesus christ
+```{r}
+raw_candy_2015 <- readxl::read_xlsx(here("raw_data/boing-boing-candy-2015.xlsx"))
+raw_candy_2016 <- readxl::read_xlsx(here("raw_data/boing-boing-candy-2016.xlsx"))
+raw_candy_2017 <- readxl::read_xlsx(here("raw_data/boing-boing-candy-2017.xlsx"))
+```
+
+steps: 
+  remove unneccesary data (i.e anything not given a Joy, Despair, Meh score or specifically asked for in question)
+     - for 2015, regex to get anything wrapped in "[]" 
+     - for 2016, ^
+     - for 2017, regex Q6 | 
+"^[\\[][[:alnum:]]+[\\]]$"
+```{r}
+# This section shows my adventure in trying to work out why what i thought would be the same regex pattern produced different results
+
+# only_candy_2015 <- raw_candy_2015 %>% 
+#   select(matches("^[[[:print:]]+]$"))
+# 
+# whats_the_difference <- raw_candy_2015 %>% 
+#   select(matches("^[[][[:print:]]+[]]$"))
+# 
+# whats_the_difference2 <- raw_candy_2015 %>% 
+#   select(matches("^[[]{2}[[:print:]]+[]]{1}$"))
+# 
+# list_a <- names(only_candy_2015) 
+# list_b <- names(whats_the_difference)
+# 
+# list_a[!(list_a %in% list_b)]
+```
+    
+    ^[\\[][[:print:]]+[\\]]$
+    
+```{r}
+only_candy_2015 <- raw_candy_2015 %>% 
+   select(matches("^[[]{1}[[:print:]]+[]]{1}$"))
+```
+

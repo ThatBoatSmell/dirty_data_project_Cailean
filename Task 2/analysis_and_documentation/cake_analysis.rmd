@@ -47,9 +47,21 @@ Which cake has the most unique ingredients?
 drop_na(cake_data) %>% 
   group_by(cake) %>% 
   arrange(cake) %>% 
-  summarise(unique_ingredients = unique(ingredient)) %>% 
-  count(unique_ingredients) # Continue from here - this isn't working yet
+  mutate(unique_ingredients = unique(ingredient)) %>% 
+  count() %>% 
+  arrange(desc(n)) %>% 
+  head(1)
 ```
 
 
 Which ingredients are used only once?
+
+```{r}
+drop_na(cake_data) %>% 
+  group_by(ingredient) %>% 
+  arrange(ingredient) %>% 
+  mutate(unique_ingredients = unique(ingredient)) %>% 
+  count() %>% 
+  filter(n == 1)
+```
+
