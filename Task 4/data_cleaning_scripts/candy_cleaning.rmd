@@ -42,9 +42,122 @@ steps:
 ```
     
     ^[\\[][[:print:]]+[\\]]$
-    
+## 2015 DATA
+
+# Separate candy data to reattach to relevant columns later    
 ```{r}
 only_candy_2015 <- raw_candy_2015 %>% 
    select(matches("^[[]{1}[[:print:]]+[]]{1}$"))
+```
+
+```{r}
+clean_names_candy_2015 <- janitor::clean_names(only_candy_2015)
+```
+
+# Separate age and trick or treating columns and a few lines to  mutate trick or treat into logical, just in case
+
+```{r}
+only_personal_data_2015 <- raw_candy_2015 %>% 
+  select(`How old are you?`, `Are you going actually going trick or treating yourself?`) %>% 
+  rename("age" = "How old are you?", "going_trick_or_treating" = "Are you going actually going trick or treating yourself?") %>% 
+  mutate(year = 2015, .before = "age") %>% 
+  mutate(gender = NA, .after = "age") %>% 
+  mutate(country = NA, .after = "gender")
+  
+
+# only_personal_data_2015 %>% 
+#   mutate(trick_or_treating_logical = case_when(
+#     going_trick_or_treating == "No" ~ FALSE,
+#     going_trick_or_treating == "Yes" ~ TRUE
+#     
+#   ))
+```
+
+rejoining data back together
+
+```{r}
+rejoined_2015 <- bind_cols(only_personal_data_2015, clean_names_candy_2015)
+
+```
+
+## 2016 DATA
+
+# Separate candy data to reattach to relevant columns later  
+
+```{r}
+only_candy_2016 <- raw_candy_2016 %>% 
+   select(matches("^[[]{1}[[:print:]]+[]]{1}$"))
+
+clean_names_candy_2016 <- janitor::clean_names(only_candy_2016)
+```
+
+
+```{r}
+# This converts changes the country column to a less stupid name and standardises the data 
+country_tidied_2016 <- raw_candy_2016 %>% 
+  select(`Which country do you live in?`) %>% 
+  mutate(`Which country do you live in?` = tolower(`Which country do you live in?`)) %>% 
+  rename(country = `Which country do you live in?`) %>% 
+  mutate(country = case_when(
+    country == NA  ~ "Other",
+    str_detect(country, "^us|america|states$") ~ "USA",
+    str_extract(country, "[u]{1}[s]{1}|[eu]+rica|trump") == TRUE ~ "USA",
+    str_detect(country, "kingdom$|^uk|england|scotland|britain") ~ "UK",
+    str_detect(country, "canada") ~ "Canada",
+    TRUE ~ "Other"
+  ))
+```
+
+```{r}
+# extract relevant personal data so it can be tidied and reconnected
+only_personal_data_2016 <- raw_candy_2016 %>% 
+  select(`How old are you?`, `Your gender:`,`Are you going actually going trick or treating yourself?` ) %>% 
+  rename("age" = "How old are you?", 
+         "going_trick_or_treating" = "Are you going actually going trick or treating yourself?",
+         "gender" = "Your gender:") %>% 
+  mutate(year = 2016, .before = "age")
+         
+```
+
+```{r}
+rejoined_2016 <- bind_cols(only_personal_data_2016, country_tidied_2016) %>% 
+  bind_cols(clean_names_candy_2016)
+```
+
+
+```{r}
+# ## Testing reading country using regex
+# raw_candy_2016 %>% 
+#   select(`Which country do you live in?`) %>% 
+#   mutate(`Which country do you live in?` = tolower(`Which country do you live in?`)) %>% 
+#   rename(country = `Which country do you live in?`) %>% 
+#   mutate(country = case_when(
+#     country == NA  ~ "Other",
+#     str_detect(country, "^us|america|states$|trump") ~ "USA",
+#     str_extract(country, "[u]{1}[s]{1}|america") == TRUE ~ "USA",
+#     str_detect(country, "kingdom$|^uk|england|scotland") ~ "UK",
+#     str_detect(country, "canada") ~ "Canada",
+#     TRUE ~ "Other"
+#   ))
+# 
+# country_tidied_2016
+```
+
+## what does it even look like if i try and connect these again
+
+```{r}
+view(full_join(rejoined_2015,rejoined_2016))
+
+## THIS IS THE STOPPING POINT FOR TONIGHT
+```
+
+
+## 2017 DATA
+
+# Separate candy data to reattach to relevant columns later  
+
+```{r}
+only_candy_2017 <- raw_candy_2017 %>% 
+  select(matches("^Q6"))
 ```
 
