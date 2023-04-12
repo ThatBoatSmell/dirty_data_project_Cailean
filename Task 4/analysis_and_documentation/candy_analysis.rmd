@@ -17,7 +17,7 @@ What is the total number of candy ratings given across the three years. (Number 
 # this selects all candy columns, mutates them into a logical TRUE or FALSE depending on if they are NA or if they have values
 # from there, sums all the values that are TRUE
 # after, it sums those values into a new column - giving us the total amount of ratings
-# The total ratings is 386924 out of 1131229 possible (9349*121) 
+# The total ratings is 386924 out of 1159276 possible (9349*124) - Around 33%
 
 candy %>% 
   select(!c(year, age, gender, country, going_trick_or_treating)) %>% 
@@ -34,12 +34,77 @@ candy %>%
   select(age, going_trick_or_treating) %>% 
   drop_na() %>% 
   filter(going_trick_or_treating == "Yes") %>% 
-  mutate(avg_age_T_T = mean(age))
+  mutate(avg_age_t_t = mean(age)) %>% 
+  select(avg_age_t_t) %>% 
+  head(1)
 ```
 
 
 What was the average age of people who are not going trick or treating?
+
+```{r}
+candy %>% 
+  select(age, going_trick_or_treating) %>% 
+  drop_na() %>% 
+  filter(going_trick_or_treating == "No") %>% 
+  mutate(avg_age_no_t_t = mean(age)) %>% 
+  select(avg_age_no_t_t) %>% 
+  head(1)
+```
+
+
 For each of joy, despair and meh, which candy bar received the most of these ratings?
+
+```{r}
+# for each candy, count "joy", "despair", "meh"
+candy_types <- colnames(only_candy)
+length_candy_types <- length(candy_types)
+current_value <- 1
+
+
+while(current_value < length_candy_types){
+  select() %>%
+  group_by(candy_types) %>%
+  count() %>%
+  slice(1)
+  str_c()
+  
+  
+  current_value <- only_candy[current_value + 1]
+    }
+
+```
+
+```{r}
+only_candy %>%
+  select(butterfinger) %>%
+  group_by(butterfinger) %>%
+  count() %>%
+  slice(1)
+
+only_candy <- replace(only_candy,is.na(only_candy), "No Answer")
+```
+
+```{r}
+
+## TOMORROW - TRY AND GET A LOOP WORKING TO COUNT JOY
+for(candy_type in only_candy){
+  select() %>% 
+  group_by() %>% 
+  count() %>% 
+  slice(1)
+}
+```
+
+```{r}
+ only_candy <- candy %>% 
+  select(-c(year, age, gender, country, going_trick_or_treating)) %>% 
+  
+  
+
+```
+
+
 How many people rated Starburst as despair?
 
 For the next three questions, count despair as -1, joy as +1, and meh as 0.
