@@ -7,10 +7,12 @@ output: html_notebook
 library(tidyverse)
 library(here)
 library(janitor)
+#install.packages("openxlsx")
+library(openxlsx)
 ```
 
 Initial look at the data
-jesus christ
+
 ```{r}
 raw_candy_2015 <- readxl::read_xlsx(here("raw_data/boing-boing-candy-2015.xlsx"))
 raw_candy_2016 <- readxl::read_xlsx(here("raw_data/boing-boing-candy-2016.xlsx"))
@@ -41,7 +43,7 @@ steps:
 # list_a[!(list_a %in% list_b)]
 ```
     
-    ^[\\[][[:print:]]+[\\]]$
+  
 ## 2015 DATA
 
 # Separate candy data to reattach to relevant columns later    
@@ -52,9 +54,12 @@ only_candy_2015 <- raw_candy_2015 %>%
 
 ```{r}
 clean_names_candy_2015 <- janitor::clean_names(only_candy_2015)
+
+
 ```
 
 # Separate age and trick or treating columns and a few lines to  mutate trick or treat into logical, just in case
+also cleaning up the names 
 
 ```{r}
 only_personal_data_2015 <- raw_candy_2015 %>% 
@@ -89,11 +94,21 @@ only_candy_2016 <- raw_candy_2016 %>%
    select(matches("^[[]{1}[[:print:]]+[]]{1}$"))
 
 clean_names_candy_2016 <- janitor::clean_names(only_candy_2016)
+
+# Comparing column names 
+
+# list_a <- names(clean_names_candy_2015)
+# list_b <- names(clean_names_candy_2016)
+# 
+# tibble(list_a[!(list_a %in% list_b)])
+# tibble(list_b[!(list_b %in% list_a)])
+
 ```
 
 
 ```{r}
 # This converts changes the country column to a less stupid name and standardises the data 
+# This will not pick up every single variant - However, it picks up most of them
 country_tidied_2016 <- raw_candy_2016 %>% 
   select(`Which country do you live in?`) %>% 
   mutate(`Which country do you live in?` = tolower(`Which country do you live in?`)) %>% 
@@ -143,13 +158,7 @@ rejoined_2016 <- bind_cols(only_personal_data_2016, country_tidied_2016) %>%
 # country_tidied_2016
 ```
 
-## what does it even look like if i try and connect these again
 
-```{r}
-view(full_join(rejoined_2015,rejoined_2016))
-
-## THIS IS THE STOPPING POINT FOR TONIGHT
-```
 
 
 ## 2017 DATA
@@ -157,7 +166,118 @@ view(full_join(rejoined_2015,rejoined_2016))
 # Separate candy data to reattach to relevant columns later  
 
 ```{r}
-only_candy_2017 <- raw_candy_2017 %>% 
+only_candy_2017 <- raw_candy_2017 %>%
   select(matches("^Q6"))
+#This pulls out all the "candy" data (assuming of course that all the relevant data is under Q6) - But they have "Q6 | " in the column names 
+```
+
+```{r}
+# This removes the "Q6 | " from all the columns  
+colnames(only_candy_2017) <- gsub("Q6 [\\|] ", " ",colnames(only_candy_2017))
+```
+
+```{r}
+# Clean candy names
+clean_names_candy_2017 <- janitor::clean_names(only_candy_2017) 
+
+# comparing column names 
+# 
+# list_a <- names(clean_names_candy_2015)
+# list_b <- names(clean_names_candy_2017)
+# 
+# tibble(list_a[!(list_a %in% list_b)])
+# tibble(list_b[!(list_b %in% list_a)])
+```
+
+
+# remove personal data 
+Like with 2016, country has been left at this stage to be cleaned separately
+```{r}
+only_personal_data_2017 <- raw_candy_2017 %>% 
+  select(`Q3: AGE`, `Q2: GENDER`, `Q1: GOING OUT?`) %>% 
+  rename("age" = "Q3: AGE", 
+         "going_trick_or_treating" = "Q1: GOING OUT?",
+         "gender" = "Q2: GENDER") %>% 
+  mutate(year = 2017, .before = "age")
+```
+
+# cleaning the country data - as before, converting to lower case, then using regex patterns to standardise naming
+```{r}
+country_tidied_2017 <- raw_candy_2017 %>% 
+  select(`Q4: COUNTRY`) %>% 
+  mutate(`Q4: COUNTRY` = tolower(`Q4: COUNTRY`)) %>% 
+  rename(country = `Q4: COUNTRY`) %>% 
+  mutate(country = case_when(
+    country == NA  ~ "Other",
+    str_detect(country, "^us|america|states$") ~ "USA",
+    str_extract(country, "[u]{1}[s]{1}|[eu]+rica|trump") == TRUE ~ "USA",
+    str_detect(country, "kingdom$|^uk|england|scotland|britain") ~ "UK",
+    str_detect(country, "canada") ~ "Canada",
+    TRUE ~ "Other"
+  ))
+```
+
+# rejoining 2017 data
+
+```{r}
+rejoined_2017 <- bind_cols(only_personal_data_2017, country_tidied_2017) %>% 
+  bind_cols(clean_names_candy_2017)
+```
+
+## rejoining the datasets and final cleaning
+
+```{r}
+rejoined_candy <- full_join(rejoined_2015, rejoined_2016) %>%
+  full_join(rejoined_2017)
+```
+
+```{r}
+# check to see how many NA's were present in age before mutating to integer (317)
+# rejoined_candy %>% 
+#   select(age) %>% 
+#   filter(is.na(age)) %>% 
+#   count()
+```
+
+
+```{r}
+# changing the age column to integer - this will eliminate any "non-number" answers (i.e. "enough" "fifty-four") and replace them with NA 
+# I have decided to leave the NA's in the data
+rejoined_candy <- rejoined_candy %>% 
+  mutate(age = as.integer(age)) 
+
+
+# rejoined_candy %>%
+#   filter(is.na(age)) %>%
+#   count()
+```
+
+```{r}
+#checking gender column
+unique(rejoined_candy$gender)
+
+# counting NA's to check next step has worked
+# rejoined_candy %>%
+#   select(gender) %>%
+#   filter(is.na(gender)) %>%
+#   count()
+
+
+# replacing NA's with "Not Provided" 
+rejoined_candy <- rejoined_candy %>% 
+  mutate(gender = replace_na(gender, "Not Provided"))
+
+# doing the same for country - This is technically not necessary, but i think makes it clearer why 2015 has no country data
+rejoined_candy <- rejoined_candy %>% 
+  mutate(country = replace_na(country, "Not Provided in 2015 data"))
+```
+
+
+# Writing cleaned data
+
+```{r}
+clean_candy <- rejoined_candy
+
+write.xlsx(clean_candy, here("clean_data/clean_candy.xlsx"))
 ```
 
