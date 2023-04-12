@@ -243,8 +243,13 @@ rejoined_candy <- full_join(rejoined_2015, rejoined_2016) %>%
 ```{r}
 # changing the age column to integer - this will eliminate any "non-number" answers (i.e. "enough" "fifty-four") and replace them with NA 
 # I have decided to leave the NA's in the data
+# Logically, age cannot be over a certain value - I've decided to replace anything over 100 with NA
 rejoined_candy <- rejoined_candy %>% 
-  mutate(age = as.integer(age)) 
+  mutate(age = as.integer(age)) %>% 
+  mutate(age = case_when(
+    age > 100 ~ NA,
+    age <= 100 ~ age
+  ))
 
 
 # rejoined_candy %>%

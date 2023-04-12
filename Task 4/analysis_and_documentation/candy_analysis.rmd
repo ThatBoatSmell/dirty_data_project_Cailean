@@ -1,0 +1,49 @@
+---
+title: "Task 4 - Halloween Candy Data - Analysis questions"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+library(here)
+library(openxlsx)
+candy <- read.xlsx(here("clean_data/clean_candy.xlsx"))
+```
+
+What is the total number of candy ratings given across the three years. (Number of candy ratings, not the number of raters. Don’t count missing values)
+
+```{r}
+# this selects all candy columns, mutates them into a logical TRUE or FALSE depending on if they are NA or if they have values
+# from there, sums all the values that are TRUE
+# after, it sums those values into a new column - giving us the total amount of ratings
+# The total ratings is 386924 out of 1131229 possible (9349*121) 
+
+candy %>% 
+  select(!c(year, age, gender, country, going_trick_or_treating)) %>% 
+  mutate(across(.col = is.character, .fns = is.na)) %>% 
+  summarise(across(.col = where(is.logical), .fns = sum)) %>%
+  mutate(total_ratings = sum(across(where(is.integer)))) %>% 
+  select(total_ratings)
+```
+
+What was the average age of people who are going out trick or treating?
+
+```{r}
+candy %>% 
+  select(age, going_trick_or_treating) %>% 
+  drop_na() %>% 
+  filter(going_trick_or_treating == "Yes") %>% 
+  mutate(avg_age_T_T = mean(age))
+```
+
+
+What was the average age of people who are not going trick or treating?
+For each of joy, despair and meh, which candy bar received the most of these ratings?
+How many people rated Starburst as despair?
+
+For the next three questions, count despair as -1, joy as +1, and meh as 0.
+
+What was the most popular candy bar by this rating system for each gender in the dataset ?
+What was the most popular candy bar in each year?
+What was the most popular candy bar by this rating for people in US, Canada, UK, and all other countries?
