@@ -23,6 +23,9 @@ cake_data %>%
 For sponge cake, how many cups of ingredients are used in total?
 
 ```{r}
+# Filter for any ingredients that list cup as measure, and for the Sponge cake
+# Then drops any NA values (as these signify that the ingredient is not used)
+# Then sums the cup values of whatever is left
 cake_data %>%
   filter(measure == "cup", cake == "Sponge") %>%
   drop_na(values) %>%
@@ -34,6 +37,8 @@ cake_data %>%
 How many ingredients are measured in teaspoons?
 
 ```{r}
+# This groups by whatever the measure for each ingredient is, filters for teaspoon
+# then lists all the ingredients that have this measure, then counts how many are returned
 cake_data %>% 
   group_by(measure) %>% 
   filter(measure == "teaspoon") %>% 
@@ -44,10 +49,10 @@ cake_data %>%
 Which cake has the most unique ingredients?
 
 ```{r}
+# this groups by cake, counts each time it appears in the list (which signifies how many ingredients are used)
+# then returns whichever cake has the highest total
 drop_na(cake_data) %>% 
   group_by(cake) %>% 
-  arrange(cake) %>% 
-  mutate(unique_ingredients = unique(ingredient)) %>% 
   count() %>% 
   arrange(desc(n)) %>% 
   head(1)
@@ -57,10 +62,10 @@ drop_na(cake_data) %>%
 Which ingredients are used only once?
 
 ```{r}
+# this groups by ingredient, counts how many times each one appears, then returns ingredients that only appear once
 drop_na(cake_data) %>% 
   group_by(ingredient) %>% 
   arrange(ingredient) %>% 
-  mutate(unique_ingredients = unique(ingredient)) %>% 
   count() %>% 
   filter(n == 1)
 ```

@@ -124,6 +124,9 @@ full_candy_numeric <- bind_cols(only_personal, candy_numeric)
 What was the most popular candy bar by this rating system for each gender in the dataset ?
 
 ```{r}
+# This converts all the candy data into a new rows called "candy_name" and "rating" to allow the total rating to be counted
+
+
 full_candy_numeric %>%
   select(!c(year, age, country, going_trick_or_treating)) %>% 
   tidyr::pivot_longer(where(is.double), names_to = "candy_name", values_to = "rating") %>% 
@@ -138,6 +141,7 @@ What was the most popular candy bar in each year?
 
 
 ```{r}
+# Same as above, but with the added step of pivoting only columns that are not year 
 full_candy_numeric %>%
   select(!c(age, gender, country, going_trick_or_treating)) %>% 
   tidyr::pivot_longer(cols = -year, names_to = "candy_name", values_to = "rating") %>% 
@@ -150,6 +154,9 @@ full_candy_numeric %>%
 What was the most popular candy bar by this rating for people in US, Canada, UK, and all other countries?
 
 ```{r}
+# Same as above - This step could technically be improved, as during cleaning, i elected to replace anything that wasn't US, Canada, or UK with other
+# If we wanted a more complete analysis for each country, we would leave other countries as they were.
+
 full_candy_numeric %>%
   select(!c(year, age, gender, going_trick_or_treating)) %>% 
   tidyr::pivot_longer(where(is.double), names_to = "candy_name", values_to = "rating") %>% 

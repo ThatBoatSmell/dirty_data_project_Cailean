@@ -47,6 +47,7 @@ steps:
 ## 2015 DATA
 
 # Separate candy data to reattach to relevant columns later    
+Using regex to select all columns that have text wrapped by square brackets, as these contain all the "candy" data
 ```{r}
 only_candy_2015 <- raw_candy_2015 %>% 
    select(matches("^[[]{1}[[:print:]]+[]]{1}$"))
@@ -54,12 +55,12 @@ only_candy_2015 <- raw_candy_2015 %>%
 
 ```{r}
 clean_names_candy_2015 <- janitor::clean_names(only_candy_2015)
-
-
 ```
 
-# Separate age and trick or treating columns and a few lines to  mutate trick or treat into logical, just in case
+# Separate age and trick or treating columns 
 also cleaning up the names 
+adding year, gender and country columns for joining to other data sets
+Assigning year = 2015, gender = NA, country = NA 
 
 ```{r}
 only_personal_data_2015 <- raw_candy_2015 %>% 
@@ -69,13 +70,6 @@ only_personal_data_2015 <- raw_candy_2015 %>%
   mutate(gender = NA, .after = "age") %>% 
   mutate(country = NA, .after = "gender")
   
-
-# only_personal_data_2015 %>% 
-#   mutate(trick_or_treating_logical = case_when(
-#     going_trick_or_treating == "No" ~ FALSE,
-#     going_trick_or_treating == "Yes" ~ TRUE
-#     
-#   ))
 ```
 
 rejoining data back together
@@ -88,6 +82,7 @@ rejoined_2015 <- bind_cols(only_personal_data_2015, clean_names_candy_2015)
 ## 2016 DATA
 
 # Separate candy data to reattach to relevant columns later  
+# Similar/same process to 2015
 
 ```{r}
 only_candy_2016 <- raw_candy_2016 %>% 
@@ -96,6 +91,9 @@ only_candy_2016 <- raw_candy_2016 %>%
 clean_names_candy_2016 <- janitor::clean_names(only_candy_2016)
 
 # Comparing column names 
+# Assuming we wanted a more complete analysis, we could use this comparison to check if there were any slight name changes 
+# e.g Butterfinger in 2015 -> Butterfingers in 2016
+# Due to time, I've chosen not to do this, even though it could affect results
 
 # list_a <- names(clean_names_candy_2015)
 # list_b <- names(clean_names_candy_2016)
@@ -107,8 +105,9 @@ clean_names_candy_2016 <- janitor::clean_names(only_candy_2016)
 
 
 ```{r}
-# This converts changes the country column to a less stupid name and standardises the data 
+# This converts changes the country column to a less stupid name and standardises names
 # This will not pick up every single variant - However, it picks up most of them
+
 country_tidied_2016 <- raw_candy_2016 %>% 
   select(`Which country do you live in?`) %>% 
   mutate(`Which country do you live in?` = tolower(`Which country do you live in?`)) %>% 
@@ -133,6 +132,8 @@ only_personal_data_2016 <- raw_candy_2016 %>%
   mutate(year = 2016, .before = "age")
          
 ```
+
+# Reconnecting 2016 data
 
 ```{r}
 rejoined_2016 <- bind_cols(only_personal_data_2016, country_tidied_2016) %>% 
@@ -164,6 +165,7 @@ rejoined_2016 <- bind_cols(only_personal_data_2016, country_tidied_2016) %>%
 ## 2017 DATA
 
 # Separate candy data to reattach to relevant columns later  
+This is essentially the same process as 2015 and 2016, but with a different pattern
 
 ```{r}
 only_candy_2017 <- raw_candy_2017 %>%
