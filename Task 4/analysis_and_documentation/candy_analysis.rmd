@@ -1,6 +1,8 @@
 ---
 title: "Task 4 - Halloween Candy Data - Analysis questions"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 
@@ -10,6 +12,129 @@ library(here)
 library(openxlsx)
 candy <- read.xlsx(here("clean_data/clean_candy.xlsx"))
 ```
+
+## Cleaning
+
+For cleaning this data, i went in with the mindset that anything that had a Joy, Despair or Meh rating was something that should be kept, even if it clearly 
+wasnt candy. This also meant that anything that listed additional items, or anything that didn't have any real relevance to the tasks was dropped.
+My logic for dropping the lists was that anything included in them was likely a one off or just nonsense that would add unnecessary columns or have very little 
+impact on existing numbers.
+
+My first step was to split the 2015 data into "Candy" and "Personal Info" -
+Personal Info contained things required by the questions, such as age, gender, country,etc.
+Candy was anything wrapped in square brackets, after a quick observation of the data.
+To get this data, I used regex, using the following pattern:
+
+```{r}
+# "^[[]{1}[[:print:]]+[]]{1}$"
+```
+
+This searched for 1 opening square bracket at the start, multiple of anything that can be printed, then ending with 1 closing square bracket.
+The column names output were then cleaned up using Janitor
+
+I then created a separate dataset for just personal information - Which in 2015 consisted of only Age and Going Trick or Treating. 
+To make life a bit easier, i mutated a few new columns in, as seen below
+
+```{r}
+# only_personal_data_2015 <- raw_candy_2015 %>% 
+#   select(`How old are you?`, `Are you going actually going trick or treating yourself?`) %>% 
+#   rename("age" = "How old are you?", "going_trick_or_treating" = "Are you going actually going trick or treating yourself?") %>% 
+#   mutate(year = 2015, .before = "age") %>% 
+#   mutate(gender = NA, .after = "age") %>% 
+#   mutate(country = NA, .after = "gender")
+```
+
+I then joined the two datasets back together to create rejoined_2015 using bind_cols, as there were no common columns to use a Join
+
+-----------------------------
+2016 followed using the same approach.
+However, i chose to separate the Country data from the rest of the personal info, as this required extra regex. 
+This column was largely full of nonsense, so quite a lot of options were required.
+
+```{r}
+# # This converts changes the country column to a less stupid name and standardises names
+
+# # This will not pick up every single variant - However, it picks up most of them
+ 
+# country_tidied_2016 <- raw_candy_2016 %>% 
+#   select(`Which country do you live in?`) %>% 
+#   mutate(`Which country do you live in?` = tolower(`Which country do you live in?`)) %>% 
+#   rename(country = `Which country do you live in?`) %>% 
+#   mutate(country = case_when(
+#     country == NA  ~ "Other",
+#     str_detect(country, "^us|america|states$") ~ "USA",
+#     str_extract(country, "[u]{1}[s]{1}|[eu]+rica|trump") == TRUE ~ "USA",
+#     str_detect(country, "kingdom$|^uk|england|scotland|britain") ~ "UK",
+#     str_detect(country, "canada") ~ "Canada",
+#     TRUE ~ "Other"
+#   ))
+```
+
+I decided not to worry too much about countries outside of what was specifically asked for, replacing them and all NA's with Other.
+
+This was then reattached to the 2016 candy and personal info data sets.
+
+--------------------------
+2017 was, again, similar to both of the above, with some minor changes.
+
+The regex used to pull out the candy data now looked like this:
+
+```{r}
+# #This pulls out all the "candy" data (assuming of course that all the relevant data is under Q6) - But they have "Q6 | " in the column names
+
+# only_candy_2017 <- raw_candy_2017 %>%
+#   select(matches("^Q6"))
+
+
+
+# # This removes the "Q6 | " from all the columns  
+# colnames(only_candy_2017) <- gsub("Q6 [\\|] ", " ",colnames(only_candy_2017))
+
+```
+ And had the additional step of using gsub and colnames to pull out the "Q6 | " from all the candy columns.
+ 
+--------------------------
+After following the same processes as above, I now had rejoined_2015, rejoined_2016 and rejoined_2017.
+
+To combine all these, i used bind_cols on 2015 and 2016, then the same again on the newly bound 2015_2016 and 2017
+
+--------------------------
+## Final Steps of Cleaning
+
+I then removed any NA's in the age, gender and country columns
+
+```{r}
+# # changing the age column to integer - this will eliminate any "non-number" answers (i.e. "enough" "fifty-four") and replace them with NA 
+# # I have decided to leave the NA's in the data
+# # Logically, age cannot be over a certain value - I've decided to replace anything over 100 with NA
+# rejoined_candy <- rejoined_candy %>% 
+#   mutate(age = as.integer(age)) %>% 
+#   mutate(age = case_when(
+#     age > 100 ~ NA,
+#     age <= 100 ~ age
+#   ))
+```
+
+```{r}
+# # replacing NA's with "Not Provided" 
+# rejoined_candy <- rejoined_candy %>% 
+#   mutate(gender = replace_na(gender, "Not Provided"))
+# 
+# # doing the same for country - This is technically not necessary, but i think makes it clearer why 2015 has no country data
+# rejoined_candy <- rejoined_candy %>% 
+#   mutate(country = replace_na(country, "Not Provided in 2015 data"))
+```
+
+
+----------------------
+
+# At this point, i felt the data was cleaned enough to be useable for analysis. 
+
+
+---------------------
+
+## Analysis
+
 
 What is the total number of candy ratings given across the three years. (Number of candy ratings, not the number of raters. Don’t count missing values)
 
