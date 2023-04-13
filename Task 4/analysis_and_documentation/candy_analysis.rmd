@@ -56,59 +56,105 @@ candy %>%
 For each of joy, despair and meh, which candy bar received the most of these ratings?
 
 ```{r}
-# for each candy, count "joy", "despair", "meh"
-candy_types <- colnames(only_candy)
-length_candy_types <- length(candy_types)
-current_value <- 1
+#making a subset of data containing only candy columns and replacing any NA's with characters "No Answer" 
+# Incase there is any need to sum
 
-
-while(current_value < length_candy_types){
-  select() %>%
-  group_by(candy_types) %>%
-  count() %>%
-  slice(1)
-  str_c()
-  
-  
-  current_value <- only_candy[current_value + 1]
-    }
-
-```
-
-```{r}
-only_candy %>%
-  select(butterfinger) %>%
-  group_by(butterfinger) %>%
-  count() %>%
-  slice(1)
+only_candy <- candy %>% 
+  select(-c(year, age, gender, country, going_trick_or_treating)) 
 
 only_candy <- replace(only_candy,is.na(only_candy), "No Answer")
-```
 
-```{r}
+# This turns the candy columns and ratings into rows
 
-## TOMORROW - TRY AND GET A LOOP WORKING TO COUNT JOY
-for(candy_type in only_candy){
-  select() %>% 
-  group_by() %>% 
-  count() %>% 
+tidyr::pivot_longer(only_candy, cols = everything(), names_to = "names", values_to = "rating") %>% 
+  group_by(names, rating) %>% 
+  arrange(names) %>% 
+  count(rating) %>% 
+  filter(rating != "No Answer") %>% 
+  arrange(desc(n)) %>% 
+  ungroup(names) %>% 
   slice(1)
-}
+
+# Some might argue that a broken glow stick is not candy - To satisfy any nitpickers, here is the answer if they are excluded
+tidyr::pivot_longer(only_candy, cols = everything(), names_to = "names", values_to = "rating") %>% 
+  group_by(names, rating) %>% 
+  arrange(names) %>% 
+  count(rating) %>% 
+  filter(rating != "No Answer", names != "broken_glow_stick") %>% 
+  arrange(desc(n)) %>% 
+  ungroup(names) %>% 
+  slice(1)
+
+
 ```
-
-```{r}
- only_candy <- candy %>% 
-  select(-c(year, age, gender, country, going_trick_or_treating)) %>% 
-  
-  
-
-```
-
 
 How many people rated Starburst as despair?
 
+```{r}
+# Using only_candy
+only_candy %>% 
+  select(starburst) %>% 
+  mutate(starburst_despair = sum(starburst == "DESPAIR")) %>% 
+  select(starburst_despair) %>% 
+  head(1)
+```
+
+
 For the next three questions, count despair as -1, joy as +1, and meh as 0.
+```{r}
+# Separating code into two blocks - personal and candy data
+# converting candy responses into numeric values then reattaching to personal data
+# This creates a new data set to avoid future faffing about
+
+only_personal <- candy %>% 
+  select(year, age, gender, country, going_trick_or_treating)
+
+candy_numeric <- only_candy %>%
+  mutate(across(everything(), ~  case_when(
+    . == "JOY" ~ 1,
+    . == "DESPAIR" ~ -1,
+    . == "MEH" ~ 0,
+    . == "No Answer" ~ 0,
+    TRUE ~ 0))) 
+
+full_candy_numeric <- bind_cols(only_personal, candy_numeric)
+
+```
 
 What was the most popular candy bar by this rating system for each gender in the dataset ?
+
+```{r}
+full_candy_numeric %>%
+  select(!c(year, age, country, going_trick_or_treating)) %>% 
+  tidyr::pivot_longer(where(is.double), names_to = "candy_name", values_to = "rating") %>% 
+  group_by(gender, candy_name) %>% 
+  summarise(across(is.double, sum)) %>% 
+  slice_max(rating)
+
+  
+```
+
 What was the most popular candy bar in each year?
+
+
+```{r}
+full_candy_numeric %>%
+  select(!c(age, gender, country, going_trick_or_treating)) %>% 
+  tidyr::pivot_longer(cols = -year, names_to = "candy_name", values_to = "rating") %>% 
+  group_by(year, candy_name) %>% 
+  summarise(across(is.double, sum)) %>% 
+  slice_max(rating)
+
+```
+
 What was the most popular candy bar by this rating for people in US, Canada, UK, and all other countries?
+
+```{r}
+full_candy_numeric %>%
+  select(!c(year, age, gender, going_trick_or_treating)) %>% 
+  tidyr::pivot_longer(where(is.double), names_to = "candy_name", values_to = "rating") %>% 
+  group_by(country, candy_name) %>% 
+  summarise(across(is.double, sum)) %>% 
+  slice_max(rating)
+```
+
